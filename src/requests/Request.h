@@ -16,7 +16,7 @@ public:
     virtual std::string serialize();
 
     // To implement in child classes
-    virtual void serialize(rapidjson::Writer<rapidjson::StringBuffer>& writer) = 0;
+    virtual void serializeObject(rapidjson::Writer<rapidjson::StringBuffer>& writer) = 0;
 };
 
 #endif // __REQUEST_H__
