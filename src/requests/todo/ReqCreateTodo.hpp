@@ -3,34 +3,27 @@
 
 #include "requests/Request.h"
 
-class ReqCreateTodo : public Request
+struct ReqCreateTodo : public Request
 {
-private:
-    /* data */
-public:
     long userId;
     std::string title;
     bool completed;
 
-    ReqCreateTodo(long userId, std::string title) 
-    : userId(userId), title(title) 
+    ReqCreateTodo(long userId, std::string title)
+        : userId(userId), title(title)
     {
         this->completed = completed;
     }
     ~ReqCreateTodo() {}
 
-    void serializeObject(rapidjson::Writer<rapidjson::StringBuffer>& writer)
+    std::string serialize()
     {
-        writer.StartObject();
-            writer.String("userId");
-            writer.Int64(userId);
-            
-            writer.String("title");
-            writer.String(title.c_str());
-            
-            writer.String("completed");
-            writer.Bool(completed);
-        writer.EndObject();
+        nlohmann::json jsonObject = {
+            {"userId", userId},
+            {"title", title},
+            {"completed", completed},
+        };
+        return jsonObject.dump();
     }
 };
 

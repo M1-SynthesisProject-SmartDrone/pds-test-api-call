@@ -3,25 +3,31 @@
 
 #include <string>
 
-#include <rapidjson/document.h>
-#include <rapidjson/writer.h>
+#include <nlohmann/json.hpp>
 
-class Response
+struct Response
 {
-private:
-    
-public:
-    Response();
-    ~Response();
+    Response() {};
+    ~Response() {};
+
+    /**
+     * Check if the response is an error or not
+     */
+    virtual bool isErrorResponse()
+    {
+        return false;
+    }
+
+    virtual void deserialize(std::string string)
+    {
+        auto jsonParsed = nlohmann::json::parse(string);
+        deserializeJson(jsonParsed);
+    }
 
     /**
      * Fill the object attributes with fields in the json string
      */
-    virtual void deserialize(std::string str);
-
-    // To implement in child classes
-    // All exceptions are handled by main method
-    virtual void deserializeDocument(rapidjson::Value& object) = 0;
+    virtual void deserializeJson(nlohmann::json json) = 0;
 };
 
 #endif // __RESPONSE_H__

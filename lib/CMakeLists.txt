@@ -1,2 +1,2 @@
 add_subdirectory(loguru)
-add_subdirectory(rapidjson)
+add_subdirectory(nlohmann)

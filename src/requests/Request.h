@@ -3,20 +3,14 @@
 
 #include <string>
 
-#include <rapidjson/writer.h>
+#include <nlohmann/json.hpp>
 
-class Request
+struct Request
 {
-private:
-    
-public:
-    Request();
-    ~Request();
+    Request() {};
+    ~Request() {};
 
-    virtual std::string serialize();
-
-    // To implement in child classes
-    virtual void serializeObject(rapidjson::Writer<rapidjson::StringBuffer>& writer) = 0;
+    virtual std::string serialize() = 0;
 };
 
 #endif // __REQUEST_H__

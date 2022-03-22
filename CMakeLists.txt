@@ -90,5 +90,5 @@ add_executable(${APP_NAME} ${drone_SRC})
 
 target_link_libraries(${APP_NAME} PUBLIC
     loguru
-    rapidjson
+    nlohmann
 )

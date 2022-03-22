@@ -3,32 +3,42 @@
 
 #include <type_traits>
 #include <iostream>
+#include <memory>
 
 #include "responses/Response.h"
+#include "requests/Request.h"
+
 
 /**
- * This is tha main class used to make api calls 
+ * This is tha main class used to make api calls.
+ * This class is designed to make http requests and wait a specific answer.
+ *
+ * For each call made (get, delete, post, etc.), you must provide the expected object to map
+ * response in. If an error is recevied, an instance of ApiErrorException will be thrown
+ * 
+ * @author Aldric Vitali Silvestre
  */
 class ApiHandler
 {
 private:
-    /* data */
+    std::string rootUrl;
 public:
-    ApiHandler() {};
-    ~ApiHandler() {};
+    ApiHandler(std::string rootUrl);
+    ~ApiHandler();
 
-    // This template (or generic in Java), assures that the class passed is a subclass of Response
-    template <typename R, typename = std::enable_if_t<std::is_base_of_v<Response, R>>>
-    R testFunc()
-    {
-        std::cout << "this is the response" << std::endl;
-        R *r = new R();
-        r->userId = 1;
-        r->id = 2;
-        r->title = "3";
-        r->completed = false;
-        return *r;
-    }
+    void get(std::string path, Response& response);
+
+    // template <typename R, std::enable_if_t<std::is_base_of_v<Response, R>>, R>
+    // std::unique_ptr<R> post(std::string path, Request& request);
+
+    // template <typename R, std::enable_if_t<std::is_base_of_v<Response, R>>, R>
+    // std::unique_ptr<R> put(std::string path, Request& request);
+
+    // template <typename R, std::enable_if_t<std::is_base_of_v<Response, R>>, R>
+    // std::unique_ptr<R> patch(std::string path, Request& request);
+
+    // template <typename R, std::enable_if_t<std::is_base_of_v<Response, R>>, R>
+    // std::unique_ptr<R> del(std::string path);
 };
 
 #endif // __APIHANDLER_H__

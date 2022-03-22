@@ -3,11 +3,9 @@
 
 #include "responses/Response.h"
 
-class RespOneTodo : public Response
-{
-private:
 
-public:
+struct RespOneTodo : public Response
+{
     long userId;
     long id;
     std::string title;
@@ -17,12 +15,12 @@ public:
 
     ~RespOneTodo() {}
 
-    void deserializeDocument(rapidjson::Value& object)
+    void deserializeJson(nlohmann::json json)
     {
-        userId = object["userId"].GetInt64();
-        id = object["id"].GetInt64();
-        title = object["title"].GetString();
-        completed = object["completed"].GetBool();
+        userId = json["userId"];
+        id = json["id"];
+        title = json["title"];
+        completed = json["completed"];
     }
 
     std::string toString()

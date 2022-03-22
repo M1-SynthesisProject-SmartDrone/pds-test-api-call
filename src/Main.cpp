@@ -56,14 +56,29 @@ void testRequests()
 
 void testApiHandler()
 {
-    ApiHandler apiHandler;
-    RespOneTodo oneTodo;
-    auto todo = apiHandler.testFunc<RespOneTodo>();
-    cout << todo.toString() << endl;
+    ApiHandler apiHandler(URL);
+    // un truc en mode send request expect answer
+    // qui throw une exception si c'est pas le bon msg ou c'est une erreur (isError)
+    // ==> Créer une exception ?
+    RespOneTodo respOneTodo;
+    apiHandler.get("/todos/1", respOneTodo);
+    cout << respOneTodo.toString() << endl;
+
+    RespMultipleTodos respMultipleTodos;
+    apiHandler.get("/todos", respMultipleTodos);
+    cout << respMultipleTodos.toString() << endl;
 }
 
 int main(int argc, char const* argv[])
 {
-    testApiHandler();
+    try
+    {
+        testApiHandler();
+    }
+    catch (exception& exception)
+    {
+        LOG_F(ERROR, "EXCEPTION : %s", exception.what());
+    }
+
     return 0;
 }

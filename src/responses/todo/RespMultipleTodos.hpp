@@ -8,23 +8,21 @@
 
 #include "responses/todo/RespOneTodo.hpp"
 
-class RespMultipleTodos : public Response
+struct RespMultipleTodos : public Response
 {
-private:
-    
-public:
     std::vector<RespOneTodo> todos;
 
     RespMultipleTodos() {}
 
     ~RespMultipleTodos() {}
 
-    void deserializeDocument(rapidjson::Value& object)
+    void deserializeJson(nlohmann::json json)
     {
-        for (auto& todo : object.GetArray())
+        // We have an array here normally
+        for (auto& todo : json)
         {
             RespOneTodo respTodo;
-            respTodo.deserializeDocument(todo);
+            respTodo.deserializeJson(todo);
 
             todos.push_back(respTodo);
         }
@@ -34,9 +32,10 @@ public:
     {
         std::stringstream ss;
         ss << "RespMultipleTodos[\n";
-        std::for_each(todos.begin(), todos.end(), [&ss](RespOneTodo todo){
-            ss << "\t" << todo.toString() << "\n";
-        });
+        std::for_each(todos.begin(), todos.end(), [&ss](RespOneTodo todo)
+            {
+                ss << "\t" << todo.toString() << "\n";
+            });
         ss << "]";
         return ss.str();
     }
