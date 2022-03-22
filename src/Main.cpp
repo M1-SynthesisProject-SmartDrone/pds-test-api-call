@@ -10,6 +10,7 @@
 #include "requests/todo/ReqCreateTodo.hpp"
 
 #include "ApiHandler/ApiHandler.h"
+#include "ApiHandler/ApiErrorException.h"
 
 using namespace std;
 
@@ -62,11 +63,18 @@ void testApiHandler()
     // ==> Créer une exception ?
     RespOneTodo respOneTodo;
     apiHandler.get("/todos/1", respOneTodo);
-    cout << respOneTodo.toString() << endl;
+    cout << respOneTodo << endl;
 
     RespMultipleTodos respMultipleTodos;
     apiHandler.get("/todos", respMultipleTodos);
-    cout << respMultipleTodos.toString() << endl;
+    cout << respMultipleTodos << endl;
+
+    ReqCreateTodo reqCreateTodo(1, "Create a todo with api call");
+    apiHandler.post("/todos", reqCreateTodo, respOneTodo);
+    cout << respOneTodo << endl;
+
+    // This one will throw
+    apiHandler.get("/error/501", respOneTodo);
 }
 
 int main(int argc, char const* argv[])
@@ -75,9 +83,15 @@ int main(int argc, char const* argv[])
     {
         testApiHandler();
     }
+    catch (ApiErrorException& exception)
+    {
+        LOG_F(ERROR, "API EXCEPTION");
+        cerr << exception.message() << endl;
+    }
     catch (exception& exception)
     {
-        LOG_F(ERROR, "EXCEPTION : %s", exception.what());
+        LOG_F(ERROR, "EXCEPTION");
+        cerr << exception.what() << endl;
     }
 
     return 0;

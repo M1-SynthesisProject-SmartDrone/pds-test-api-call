@@ -28,6 +28,17 @@ struct Response
      * Fill the object attributes with fields in the json string
      */
     virtual void deserializeJson(nlohmann::json json) = 0;
+
+    virtual std::string toString()
+    {
+        return "Base response";
+    }
+
+    friend std::ostream& operator<< (std::ostream& stream, Response& response)
+    {
+        stream << response.toString();
+        return stream;
+    }
 };
 
 #endif // __RESPONSE_H__

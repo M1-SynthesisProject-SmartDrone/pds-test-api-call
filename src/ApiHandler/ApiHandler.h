@@ -10,9 +10,11 @@
 
 
 /**
- * This is tha main class used to make api calls.
+ * This is the main class used to make api calls.
  * This class is designed to make http requests and wait a specific answer.
  *
+ * The path send is relative to the root url provided in the constructor
+ * 
  * For each call made (get, delete, post, etc.), you must provide the expected object to map
  * response in. If an error is recevied, an instance of ApiErrorException will be thrown
  * 
@@ -28,17 +30,13 @@ public:
 
     void get(std::string path, Response& response);
 
-    // template <typename R, std::enable_if_t<std::is_base_of_v<Response, R>>, R>
-    // std::unique_ptr<R> post(std::string path, Request& request);
+    void post(std::string path, Request& request, Response& response);
 
-    // template <typename R, std::enable_if_t<std::is_base_of_v<Response, R>>, R>
-    // std::unique_ptr<R> put(std::string path, Request& request);
+    void put(std::string path, Request& request, Response& response);
 
-    // template <typename R, std::enable_if_t<std::is_base_of_v<Response, R>>, R>
-    // std::unique_ptr<R> patch(std::string path, Request& request);
+    void patch(std::string path, Request& request, Response& response);
 
-    // template <typename R, std::enable_if_t<std::is_base_of_v<Response, R>>, R>
-    // std::unique_ptr<R> del(std::string path);
+    void del(std::string path, Response& response);
 };
 
 #endif // __APIHANDLER_H__
